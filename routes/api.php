@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,4 +32,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/books', [BookController::class, 'store']);
     Route::put('/books/{id}', [BookController::class, 'update']);
     Route::delete('/books/{id}', [BookController::class, 'destroy']);
+
+    // Files routes
+    Route::post('/files', [FileController::class, 'upload']);
 });
