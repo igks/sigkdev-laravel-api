@@ -17,15 +17,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Auth routes
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/refresh', [AuthController::class, 'refresh']);
+        Route::get('/me', [AuthController::class, 'me']);
+    });
+});
 
 Route::group(['middleware' => 'auth:api'], function () {
-    // Auth routes
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::post('/me', [AuthController::class, 'me']);
-
     // Books routes
     Route::get('/books', [BookController::class, 'index']);
     Route::get('/books/{id}', [BookController::class, 'show']);
